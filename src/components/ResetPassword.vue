@@ -1,31 +1,38 @@
 <template>
-  <div class="reset-password-container">
-    <h2>Reset Your Password</h2>
-    <form @submit.prevent="resetPassword">
-      <div>
-        <label for="password">New Password</label>
-        <input
-          type="password"
-          id="password"
-          v-model="newPassword"
-          placeholder="Enter new password"
-          required
-        />
-      </div>
-      <div>
-        <label for="confirmPassword">Confirm Password</label>
-        <input
-          type="password"
-          id="confirmPassword"
-          v-model="confirmPassword"
-          placeholder="Confirm new password"
-          required
-        />
-      </div>
-      <button type="submit" :disabled="isLoading">Reset Password</button>
-      <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-      <p v-if="successMessage" class="success-message">{{ successMessage }}</p>
-    </form>
+  <div class="container">
+    <div class="logo">
+      <span>ip</span>
+    </div>
+    <div class="form-container">
+      <h1>Reset Your Password</h1>
+      <form @submit.prevent="resetPassword">
+        <div class="input-group">
+          <label for="password">New Password</label>
+          <input
+            type="password"
+            id="password"
+            v-model="newPassword"
+            placeholder="Enter new password"
+            required
+          />
+        </div>
+        <div class="input-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            v-model="confirmPassword"
+            placeholder="Confirm new password"
+            required
+          />
+        </div>
+        <button type="submit" :disabled="isLoading">Reset Password</button>
+        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+        <p v-if="successMessage" class="success-message">
+          {{ successMessage }}
+        </p>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -88,57 +95,102 @@ export default {
 };
 </script>
 
-<style scoped>
-.reset-password-container {
-  max-width: 400px;
-  margin: 0 auto;
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
   padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
 }
 
-h2 {
+.container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.logo {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 }
 
-form {
+.logo span {
+  color: #f15a24;
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.form-container {
   display: flex;
   flex-direction: column;
+  gap: 24px;
 }
 
-div {
-  margin-bottom: 15px;
+h1 {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-size: 14px;
+  color: #666;
 }
 
 input {
-  padding: 8px;
-  margin-top: 5px;
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  padding: 12px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: #f15a24;
+  box-shadow: 0 0 0 4px rgba(241, 90, 36, 0.1);
+}
+
+input::placeholder {
+  color: #999;
 }
 
 button {
-  padding: 10px;
-  background-color: #4caf50;
+  background-color: #f15a24;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 16px;
 }
 
-button:disabled {
-  background-color: #ccc;
+button:hover {
+  background-color: #e04d17;
 }
 
-.error-message {
-  color: red;
-  text-align: center;
-}
-
-.success-message {
-  color: green;
-  text-align: center;
+@media (max-width: 480px) {
+  .container {
+    width: 90%;
+  }
 }
 </style>

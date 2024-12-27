@@ -116,11 +116,8 @@ export default {
 
         const { token } = response.data;
 
-        // Save the token to local storage
         localStorage.setItem("token", token);
 
-        // Redirect or show success message
-        // Replace '/dashboard' with your actual route
         window.location.href = "/dashboard";
       } catch (err) {
         error.value =
