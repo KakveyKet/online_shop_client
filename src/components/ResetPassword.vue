@@ -40,7 +40,7 @@
 import { ref } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
-
+import url from "@/composible/api";
 export default {
   setup() {
     const route = useRoute();
@@ -65,7 +65,7 @@ export default {
       try {
         isLoading.value = true;
         const response = await axios.patch(
-          `http://localhost:5000/api/reset-password/${token}`, // Send token in the URL
+          `${url}/api/reset-password/${token}`, // Send token in the URL
           {
             token: token,
             newPassword: newPassword.value, // Send newPassword in the body
