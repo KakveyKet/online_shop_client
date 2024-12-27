@@ -1,37 +1,47 @@
 <template>
-  <div class="container">
-    <div class="logo">
-      <span>ip</span>
-    </div>
-    <div class="form-container">
-      <h1>Reset Your Password</h1>
-      <form @submit.prevent="resetPassword">
-        <div class="input-group">
-          <label for="password">New Password</label>
-          <input
-            type="password"
-            id="password"
-            v-model="newPassword"
-            placeholder="Enter new password"
-            required
-          />
-        </div>
-        <div class="input-group">
-          <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            v-model="confirmPassword"
-            placeholder="Confirm new password"
-            required
-          />
-        </div>
-        <button type="submit" :disabled="isLoading">Reset Password</button>
-        <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
-        <p v-if="successMessage" class="success-message">
-          {{ successMessage }}
-        </p>
-      </form>
+  <div
+    style="
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    "
+  >
+    <div class="container">
+      <div class="logo">
+        <span>ip</span>
+      </div>
+      <div class="form-container">
+        <h1>Reset Your Password</h1>
+        <form @submit.prevent="resetPassword">
+          <div class="input-group">
+            <label for="password">New Password</label>
+            <input
+              type="password"
+              id="password"
+              v-model="newPassword"
+              placeholder="Enter new password"
+              required
+            />
+          </div>
+          <div class="input-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              v-model="confirmPassword"
+              placeholder="Confirm new password"
+              required
+            />
+          </div>
+          <button type="submit" :disabled="isLoading">Reset Password</button>
+          <p v-if="errorMessage" class="error-message">{{ errorMessage }}</p>
+          <p v-if="successMessage" class="success-message">
+            {{ successMessage }}
+          </p>
+        </form>
+      </div>
     </div>
   </div>
 </template>

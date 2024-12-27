@@ -57,7 +57,7 @@ const routes = [
     },
     {
         path: "/unauthorized",
-        component: Unauthorized, // Show unauthorized message if role mismatch
+        component: Unauthorized,
     },
     {
         path: "/reset-password/:token",
