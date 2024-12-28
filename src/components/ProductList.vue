@@ -116,7 +116,7 @@ export default {
       page: page.value,
       limit: limit.value,
       search: "",
-      searchColumn: ["name"], // Columns to search by
+      searchColumn: ["name"],
     });
 
     const handlePagination = () => {
