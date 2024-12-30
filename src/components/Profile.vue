@@ -2,19 +2,18 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col cols="12" md="8" lg="6">
-        <v-card
-          v-for="user in data.data"
-          :key="user._id"
-          class="mx-auto"
-          elevation="5"
-        >
+        <v-card v-if="data.data" class="mx-auto" elevation="5">
           <v-avatar
             class="profile-avatar"
             size="110"
             :color="online ? 'green' : 'grey'"
           >
             <v-img
-              :src="user.image ? user.image : 'default-image-url.jpg'"
+              :src="
+                data.data[0]?.image
+                  ? data.data[0]?.image
+                  : 'default-image-url.jpg'
+              "
             ></v-img>
 
             <!-- Custom file input area -->
@@ -82,13 +81,10 @@
               <v-col cols="12" sm="6">
                 <v-list-item class="mt-4">
                   <v-list-item-content>
-                    <v-list-item-title
-                      v-for="user in data.data"
-                      :key="user._id"
-                    >
+                    <v-list-item-title v-if="data.data">
                       <v-chip class="ma-2" color="primary" label>
                         <v-icon icon="mdi-calendar" start></v-icon>
-                        {{ formateDate(user.createdAt) }}
+                        {{ formateDate(data.data[0].createdAt) }}
                       </v-chip>
                     </v-list-item-title>
                   </v-list-item-content>
@@ -118,14 +114,13 @@ const { user } = useAuth();
 const { data, fetchData, updateUser } = useFetch("users");
 
 // Filters for the data fetch
-const filters = ref({
-  page: 1,
+const filters = {
+  _id: "676e184325921960800ef8c6", // String _id value
+  status: "true",
   limit: 1,
-  search: "",
-  _id: user.value._id,
-});
+  page: 1,
+};
 
-// Reactive variables for user details
 const form = reactive({
   name: "",
   location: "",
@@ -134,12 +129,7 @@ const form = reactive({
   phone: "",
   location: "",
 });
-// const name = ref(null);
-// const location = ref(null);
-// const email = ref(null);
-// const image = ref(null);
-// const phone = ref(null);
-// Handle profile image change (file upload)
+
 const handleChange = (e) => {
   const file = e.target.files[0];
   form.image = file;
@@ -152,11 +142,11 @@ onMounted(async () => {
     if (Array.isArray(data.value?.data)) {
       const item = data.value.data[0];
 
-      form.name = item.name || "N/A";
-      form.location = item.location || "N/A";
-      form.email = item.email || "N/A";
-      form.image = item.image || "default-image-url.jpg"; // Default fallback image
-      form.phone = item.phoneNumber || "N/A";
+      form.name = item?.name || "N/A";
+      form.location = item?.location || "N/A";
+      form.email = item?.email || "N/A";
+      form.image = item?.image || "default-image-url.jpg"; // Default fallback image
+      form.phone = item?.phoneNumber || "N/A";
     } else {
       console.error("No data found or invalid data structure!");
     }
@@ -182,10 +172,8 @@ const handleUpdate = async () => {
   try {
     // Assuming updateUser expects FormData
     await updateUser(payload, data.value.data[0]?._id);
-    console.log("====================================");
     console.log("User updated successfully");
     console.log("formData", payload);
-    console.log("====================================");
   } catch (error) {
     console.error("Error updating user:", error);
   }

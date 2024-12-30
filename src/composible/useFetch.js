@@ -29,7 +29,6 @@ export function useFetch(collection) {
         try {
             console.log(`Fetching data for collection: ${collection}`);
 
-            // Build query string from filters
             const queryString = new URLSearchParams(filters).toString();
             const url = `/api/${collection}${queryString ? `?${queryString}` : ""}`;
 

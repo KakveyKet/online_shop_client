@@ -11,19 +11,19 @@
         "
       >
         <v-card-title>
-          User List
+          Delivery List
           <v-spacer></v-spacer>
         </v-card-title>
         <v-text-field
           v-model="filters.search"
           max-width="300"
           append-icon="mdi-magnify"
-          placeholder="Search by name and email"
           label="Search"
+          placeholder="Search by name"
           single-line
           hide-details
         ></v-text-field>
-        <v-btn color="primary" @click="handleAdd">Add New User</v-btn>
+        <v-btn color="primary" @click="handleAdd">Add New </v-btn>
       </div>
     </v-card>
     <table border="1" cellspacing="0" cellpadding="10" class="mt-10">
@@ -31,9 +31,8 @@
         <tr>
           <th>No .</th>
           <th>Name</th>
-          <th>Email</th>
-          <th>Status</th>
-          <th>Reminder</th>
+          <th>Image</th>
+          <!-- <th>Status</th> -->
           <th>Actions</th>
         </tr>
       </thead>
@@ -43,39 +42,31 @@
             {{ index + 1 }}
           </td>
           <td>{{ item.name }}</td>
-          <td>{{ item.email }}</td>
           <td>
-            <span :style="{ color: item.status ? 'green' : 'red' }">
-              {{ item.status ? "Active" : "Inactive" }}
-            </span>
+            <img :src="item.image" alt="category" width="50" />
           </td>
           <td>
-            <span :style="{ color: item.is_reminder ? 'green' : 'red' }">
-              {{ item.is_reminder ? "Yes" : "No" }}
-            </span>
-          </td>
-          <td class="d-flex ga-3">
-            <v-btn color="primary" @click="handleUpdae(item)">Update</v-btn>
-            <v-btn color="red" @click="handleDelete(item)">Delete</v-btn>
+            <div class="d-flex ga-3 item-center">
+              <v-btn color="primary" @click="handleUpdae(item)">Update</v-btn>
+              <v-btn color="red" @click="handleDelete(item)">Delete</v-btn>
+            </div>
           </td>
         </tr>
       </tbody>
     </table>
-    <div class="d-flex justify-center align-center gap-3 mt-5">
-      <Pagination
-        :currentPage="currentPage"
-        :totalPages="totalPages"
-        @prev="handlePrev"
-        @next="handleNext"
-        @page="handlePage"
-      />
-    </div>
+    <Pagination
+      :currentPage="currentPage"
+      :totalPages="totalPages"
+      @prev="handlePrev"
+      @next="handleNext"
+      @page="handlePage"
+    />
     <v-snackbar v-model="showError" color="error" timeout="3000">
       {{ error }}
     </v-snackbar>
   </v-container>
   <v-dialog v-model="dialog">
-    <RegiserForm
+    <DeliveryForm
       @close="handleClose"
       :datatoedit="datatoedit"
       @socket="handleDatabaseUpdate"
@@ -86,55 +77,59 @@
 <script>
 import { ref, onMounted, watch } from "vue";
 import { useFetch } from "../composible/useFetch";
-import RegiserForm from "./CreateUser.vue";
 import socket from "@/composible/socket";
 import Pagination from "./Pagination.vue";
+import DeliveryForm from "./DeliveryForm.vue";
 export default {
   components: {
-    RegiserForm,
+    DeliveryForm,
     Pagination,
   },
   setup() {
+    const handleClose = () => {
+      dialog.value = false;
+    };
     const dialog = ref(false);
     const datatoedit = ref(null);
     const page = ref(1);
-    const limit = ref(50);
+    const limit = ref(5);
     const currentPage = ref(1);
     const totalPages = ref(1);
     const totalItems = ref(0);
 
-    const handleClose = () => {
-      dialog.value = false;
-    };
-    const collection = ref("users");
+    const collection = ref("deliveries");
     const { data, loading, error, fetchData, deleteUser } = useFetch(
       collection.value
     );
     const filters = ref({
-      status: true,
-      role: "user||admin",
-      search: "",
       page: page.value,
       limit: limit.value,
-      searchColumn: ["name", "email"].join(","),
+      search: "",
+      searchColumn: ["name"],
     });
-    const handlePagination = () => {
+
+    const handlePagination = async () => {
       filters.value.page = page.value;
       filters.value.limit = limit.value;
-      fetchData(filters.value);
+      await fetchData(filters.value);
     };
     const handleNext = () => {
       page.value++;
       handlePagination();
     };
-    const handlePrev = () => {
+    const handlePrev = async () => {
       page.value--;
       handlePagination();
+      await fetchData(filters.value);
     };
 
-    const handlePage = (p) => {
+    const handlePage = async (p) => {
       page.value = page;
-      handlePagination();
+      await fetchData(filters.value);
+    };
+    const handleDelete = async (doc) => {
+      await deleteUser(doc._id);
+      await fetchData(filters.value);
     };
     watch(
       () => filters.value.search,
@@ -144,11 +139,6 @@ export default {
     );
     const updateSearch = (searchTerm) => {
       filters.value.search = searchTerm;
-    };
-
-    const handleDelete = async (doc) => {
-      await deleteUser(doc._id);
-      await fetchData(filters.value);
     };
     const handleDatabaseUpdate = async () => {
       await fetchData(filters.value);

@@ -62,6 +62,7 @@ const menuItems = [
   { title: "Users", icon: "mdi-account", path: "/users" },
   { title: "Category", icon: "mdi-shape", path: "/categories" },
   { title: "Product", icon: "mdi-package-variant-closed", path: "/product" },
+  { title: "Delivery Method", icon: "mdi-truck-delivery", path: "/delivery" },
   { title: "Order", icon: "mdi-cart", path: "/order" },
   { title: "Report", icon: "mdi-file-chart", path: "/report" },
 ];

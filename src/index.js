@@ -9,6 +9,7 @@ import CategoryList from "./components/CategoryList.vue";
 import ProductList from "./components/ProductList.vue";
 import ResetPassword from "./components/ResetPassword.vue";
 import Profile from "./components/Profile.vue";
+import DeliveryList from "./components/DeliveryList.vue";
 const routes = [
     {
         path: "/",
@@ -45,6 +46,12 @@ const routes = [
                 name: "profile",
                 meta: { requiresAuth: true },
             },
+            {
+                path: "/delivery",
+                component: DeliveryList,
+                name: "delivery",
+                meta: { requiresAuth: true },
+            }
         ],
     },
     {
