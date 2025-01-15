@@ -1,8 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-    // baseURL: "https://online-shop-hxhm.onrender.com",
-    baseURL: "http://localhost:5000",
+    baseURL: "https://online-shop-hxhm.onrender.com",
+    // baseURL: "http://localhost:5000",
 
 });
 instance.interceptors.request.use((config) => {

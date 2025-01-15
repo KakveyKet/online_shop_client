@@ -11,6 +11,8 @@
   "dependencies": {
     "@mdi/font": "7.4.47",
     "axios": "^1.7.9",
+    "bakong-khqr": "^1.0.17",
+    "qrcode": "^1.5.4",
     "roboto-fontface": "*",
     "socket.io-client": "^4.8.1",
     "vue": "^3.4.31",
